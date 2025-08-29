@@ -1,0 +1,169 @@
+/* ======================
+   Global Styles
+   ====================== */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #e0f7fa;
+    color: #333;
+}
+
+/* ======================
+   Wrapper (site container)
+   ====================== */
+.wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #e0e0e0;
+    border-radius: 20px;
+    box-shadow: -26px -26px 52px #b1b1b1,
+                 26px 26px 52px #ffffff;
+}
+
+/* ======================
+   Header
+   ====================== */
+header {
+    background-color: #00838f;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+/* ======================
+   Navigation Buttons
+   ====================== */
+nav button {
+    margin: 5px;
+    padding: 10px 15px;
+    border: none;
+    background-color: #004d40;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+nav button:hover {
+    background-color: #00251a;
+}
+
+/* ======================
+   Intro Section (index.html)
+   ====================== */
+.intro-section {
+    padding: 60px;
+    text-align: center;
+}
+
+.intro-section h1 {
+    font-size: 2.5em;
+    color: #00796b;
+}
+
+.intro-section p {
+    font-size: 1.2em;
+    margin: 20px auto;
+    max-width: 600px;
+}
+
+.auth-buttons button {
+    margin: 10px;
+}
+
+/* ======================
+   Portfolio Page Sections
+   ====================== */
+.scroll-container {
+    height: 80vh;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    padding: 20px;
+}
+
+.content-section {
+    margin-bottom: 80px;
+    padding: 20px;
+    background-color: #e0f2f1;
+    border-radius: 10px;
+}
+
+.content-section h2 {
+    color: #00695c;
+}
+
+ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+li {
+    margin: 10px 0;
+    font-size: 1.1em;
+}
+
+/* ======================
+   Neumorphic Buttons
+   ====================== */
+.neu-button {
+  background-color: #e0e0e0;
+  border-radius: 73px;
+  box-shadow: inset 4px 4px 10px #bcbcbc,
+              inset -4px -4px 10px #ffffff;
+  color: #4d4d4d;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 15px 40px;
+  transition: all 0.2s ease-in-out;
+  border: 2px solid rgb(206, 206, 206);
+}
+
+.neu-button:hover {
+  box-shadow: inset 2px 2px 5px #bcbcbc,
+              inset -2px -2px 5px #ffffff,
+              2px 2px 5px #bcbcbc,
+              -2px -2px 5px #ffffff;
+}
+
+.neu-button:focus {
+  outline: none;
+  box-shadow: inset 2px 2px 5px #bcbcbc,
+              inset -2px -2px 5px #ffffff,
+              2px 2px 5px #bcbcbc,
+              -2px -2px 5px #ffffff;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.wrapper .neu-button {
+  background-color: #e0e0e0;
+  border-radius: 73px;
+  box-shadow: inset 4px 4px 10px #bcbcbc,
+              inset -4px -4px 10px #ffffff;
+  color: #4d4d4d;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 15px 40px;
+  transition: all 0.2s ease-in-out;
+  border: 2px solid rgb(206, 206, 206);
+}
+
+.wrapper .neu-button:hover {
+  box-shadow: inset 2px 2px 5px #bcbcbc,
+              inset -2px -2px 5px #ffffff,
+              2px 2px 5px #bcbcbc,
+              -2px -2px 5px #ffffff;
+}
+
+.wrapper .neu-button:focus {
+  outline: none;
+  box-shadow: inset 2px 2px 5px #bcbcbc,
+              inset -2px -2px 5px #ffffff,
+              2px 2px 5px #bcbcbc,
+              -2px -2px 5px #ffffff;
+}
