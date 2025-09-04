@@ -2,6 +2,21 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <h2>Portfolio</h2>
+    <h3>My Skills & Leadership Qualities</h3>
+
+<h4>Skills</h4>
+<asp:Repeater ID="rptSkills" runat="server">
+    <ItemTemplate>
+        <span class="skill-tag"><%# Container.DataItem %></span>
+    </ItemTemplate>
+</asp:Repeater>
+
+<h5>Team Leadership Qualities</h5>
+<asp:Repeater ID="rptLeadership" runat="server">
+    <ItemTemplate>
+        <span class="skill-tag"><%# Container.DataItem %></span>
+    </ItemTemplate>
+</asp:Repeater>
 
     <asp:Repeater ID="rptProjects" runat="server">
         <ItemTemplate>

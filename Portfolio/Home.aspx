@@ -8,7 +8,6 @@
         <asp:Panel ID="pnlAdminOptions" runat="server" Visible="false" CssClass="center-panel">
             <h3>Admin Options</h3>
             <a href="ExtendedInfo.aspx">Manage Projects</a><br />
-            <a href="UserInfo.aspx">View Members</a>
         </asp:Panel>
 
         <asp:Panel ID="pnlMemberOptions" runat="server" Visible="false" CssClass="center-panel">

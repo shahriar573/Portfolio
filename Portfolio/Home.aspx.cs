@@ -20,7 +20,7 @@ namespace Portfolio_Website
             // Hide all first
             pnlAdminOptions.Visible = false;
             pnlMemberOptions.Visible = false;
-            pnlGuestOptions.Visible = false;
+            pnlGuestOptions.Visible = false;https://localhost:44366/Home.aspx.cs
 
             // Show based on role
             switch (role)

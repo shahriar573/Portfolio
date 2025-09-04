@@ -1,176 +1,210 @@
 ﻿/* ---------- General Body & Fonts ---------- */
 body {
-    font-family: 'Segoe UI', Arial, sans-serif;
+    font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #e0f7fa;
+    background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
     color: #333;
+    transition: all 0.3s ease;
 }
 
 /* ---------- Header ---------- */
 header, .header {
-    background-color: #00838f; /* Portfolio header */
+    background: linear-gradient(90deg, #00838f, #26c6da);
     color: white;
-    padding: 20px;
+    padding: 20px 0;
     text-align: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    transition: all 0.3s ease;
 }
 
-.header {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
+    .header input, .header button {
+        margin-left: 10px;
+        padding: 8px 12px;
+        border-radius: 6px;
+        border: none;
+    }
 
 /* ---------- Navigation ---------- */
 nav {
-    background-color: #ecf0f1; /* Site.css background */
-    padding: 8px 16px;
+    background-color: #ffffffcc;
+    padding: 10px 16px;
     text-align: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 80px;
+    z-index: 90;
 }
 
-    nav button, nav a button {
-        margin: 5px;
-        padding: 10px 15px;
-        border: none;
-        background-color: #004d40;
-        color: white;
-        border-radius: 5px;
-        cursor: pointer;
+    nav a, nav button {
+        margin: 5px 8px;
+        padding: 10px 18px;
+        border-radius: 6px;
+        text-decoration: none;
+        color: #004d40;
+        font-weight: 600;
+        transition: all 0.3s ease;
     }
 
-        nav button:hover, nav a button:hover {
-            background-color: #00251a;
+        nav a:hover, nav button:hover {
+            background-color: #004d40;
+            color: #ffffff;
+            transform: translateY(-2px);
         }
-
-/* ---------- Scroll Container ---------- */
-.scroll-container {
-    height: 80vh;
-    overflow-y: scroll;
-    scroll-behavior: smooth;
-    padding: 20px;
-}
 
 /* ---------- Content Sections ---------- */
 .content-section {
     margin-bottom: 80px;
-    padding: 20px;
-    background-color: #e0f2f1;
-    border-radius: 10px;
+    padding: 30px;
+    background: rgba(255,255,255,0.9);
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+    .content-section:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+    }
+
     .content-section h2 {
-        color: #00695c;
+        color: #00796b;
+        font-size: 2em;
+        margin-bottom: 15px;
     }
 
 /* ---------- Lists ---------- */
 ul {
-    list-style-type: none;
+    list-style: none;
     padding-left: 0;
 }
 
 li {
-    margin: 10px 0;
-    font-size: 1.1em;
-}
-
-/* ---------- Containers & Panels ---------- */
-.container, .crud-panel {
-    background: #fff;
-    padding: 12px;
     margin: 12px 0;
-    border-radius: 8px;
-    box-shadow: 0 1px 4px rgba(0,0,0,.08);
+    font-size: 1.1em;
 }
 
 /* ---------- Inputs ---------- */
 .input, input[type=text], input[type=password], textarea, select {
     display: block;
-    margin: 6px 0;
-    padding: 8px;
-    width: 280px;
+    margin: 8px 0;
+    padding: 10px;
+    width: 300px;
     max-width: 100%;
-    border-radius: 4px;
+    border-radius: 6px;
     border: 1px solid #ccc;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
+
+    .input:focus, input:focus, textarea:focus, select:focus {
+        border-color: #00838f;
+        box-shadow: 0 0 8px rgba(0,131,143,0.2);
+        outline: none;
+    }
 
 /* ---------- Buttons ---------- */
 .btn, button {
-    padding: 8px 14px;
+    padding: 10px 18px;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
-    background: #3498db;
+    background: linear-gradient(45deg, #26c6da, #00838f);
     color: #fff;
+    font-weight: 600;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
     .btn:hover, button:hover {
-        background: #2980b9;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
     }
 
     .btn.danger {
-        background: #e74c3c;
+        background: linear-gradient(45deg, #e74c3c, #c0392b);
     }
 
 /* ---------- Messages ---------- */
 .message {
     display: block;
-    margin: 12px 16px;
-    padding: 10px;
-    border-radius: 6px;
+    margin: 14px 16px;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 500;
+    text-align: center;
+    transition: all 0.3s ease;
 }
 
     .message.success {
         background: #2ecc71;
-        color: #fff;
+        color: white;
     }
 
     .message.error {
         background: #e74c3c;
-        color: #fff;
+        color: white;
     }
 
-/* ---------- Project Cards / Tables ---------- */
+/* ---------- Project Cards ---------- */
 .project-card {
     border: 1px solid #e1e4e8;
-    border-radius: 8px;
-    padding: 12px;
-    margin: 10px 0;
-    background: #fff;
+    border-radius: 10px;
+    padding: 16px;
+    margin: 12px 0;
+    background: #ffffffcc;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-}
+    .project-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+        background: #e0f2f1;
+    }
 
-th, td {
-    padding: 10px;
-    border: 1px solid #ddd;
-}
-
-th {
-    background: #f4f4f4;
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
 }
 
 /* ---------- Intro Section ---------- */
 .intro-section {
-    padding: 60px;
+    padding: 80px 20px;
     text-align: center;
 }
 
     .intro-section h1 {
-        font-size: 2.5em;
+        font-size: 3em;
         color: #00796b;
+        margin-bottom: 20px;
     }
 
     .intro-section p {
         font-size: 1.2em;
         margin: 20px auto;
-        max-width: 600px;
+        max-width: 650px;
+        line-height: 1.6em;
+        color: #004d40;
     }
 
-/* ---------- Auth Buttons ---------- */
-.auth-buttons button {
-    margin: 10px;
+/* ---------- Skills ---------- */
+.skills-container {
+    margin-bottom: 20px;
+}
+
+.skill-tag {
+    display: inline-block;
+    background-color: #00838f;
+    color: white;
+    padding: 5px 10px;
+    margin: 3px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* ---------- Smooth Animations ---------- */
+* {
+    transition: all 0.3s ease-in-out;
 }

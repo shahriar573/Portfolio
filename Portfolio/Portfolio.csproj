@@ -143,7 +143,9 @@
     <Content Include="AdminPanel.aspx" />
     <Content Include="CSS\Animations.css" />
     <Content Include="CSS\Dashboard.css" />
-    <Content Include="CSS\Forms.css" />
+    <Content Include="CSS\Forms.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="CSS\main.css" />
     <Content Include="CSS\Portfolio.css" />
     <Content Include="CSS\Site.css" />

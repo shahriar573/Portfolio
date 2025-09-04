@@ -5,8 +5,8 @@
 <head runat="server">
     <title>Portfolio Site</title>
     <link rel="stylesheet" href="~/CSS/Animations.css" />
-    <link rel="stylesheet" href="~/CSS/Dashboard.css" />
-    <link rel="stylesheet" href="~/CSS/Forms.css" />
+ <link rel="stylesheet" href="~/CSS/Dashboard.css" />
+ <link rel="stylesheet" href="~/CSS/Forms.css" />
     <link rel="stylesheet" href="~/CSS/main.css" />
     <link rel="stylesheet" href="~/CSS/Site.css" />
     <link rel="stylesheet" href="~/CSS/Portfolio.css" />
@@ -32,7 +32,6 @@
             <asp:Panel ID="navAdmin" runat="server" Visible="false">
                 <a href="Home.aspx">Home</a> | 
                 <a href="ExtendedInfo.aspx">Manage Projects</a> | 
-                <a href="UserInfo.aspx">Members</a>
             </asp:Panel>
 
             <!-- Member Navigation -->

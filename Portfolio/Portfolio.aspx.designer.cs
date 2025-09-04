@@ -15,6 +15,24 @@ namespace Portfolio_Website
     {
 
         /// <summary>
+        /// rptSkills control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptSkills;
+
+        /// <summary>
+        /// rptLeadership control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptLeadership;
+
+        /// <summary>
         /// rptProjects control.
         /// </summary>
         /// <remarks>
