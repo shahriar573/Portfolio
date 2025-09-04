@@ -20,6 +20,18 @@ namespace Portfolio_Website
         {
             string role = Session["UserRole"]?.ToString();
 
+            if(string.IsNullOrEmpty(role))
+            {
+
+                HttpCookie roleCookie = Request.Cookies["UserRole"];
+                if(roleCookie!=null)
+                {
+                    role = roleCookie.Value;
+                    Session["UserRole"] = role;
+                }
+
+            }
+
             if (!string.IsNullOrEmpty(role))
             {
                 lblUser.Text = "Logged in as " + role;
@@ -68,6 +80,12 @@ namespace Portfolio_Website
                             Session["UserID"] = userId;
                             FormsAuthentication.SetAuthCookie(username, false);
 
+                            HttpCookie roleCookie = new HttpCookie("UserRole", role);
+                            roleCookie.HttpOnly = true;
+                            roleCookie.Secure = true;
+                            roleCookie.SameSite = SameSiteMode.Strict;
+                            roleCookie.Expires = DateTime.Now.AddMinutes(30);
+
                             UpdateNavigation();
                             Response.Redirect("Home.aspx");
                             return;
@@ -83,6 +101,13 @@ namespace Portfolio_Website
         {
             Session.Clear();
             FormsAuthentication.SignOut();
+
+            if (Request.Cookies["UserRole"] != null)
+            {
+                HttpCookie roleCookie = new HttpCookie("UserRole");
+                roleCookie.Expires = DateTime.Now.AddDays(-1);
+                Response.Cookies.Add(roleCookie);
+            }
 
             UpdateNavigation();
             Response.Redirect("Home.aspx");
