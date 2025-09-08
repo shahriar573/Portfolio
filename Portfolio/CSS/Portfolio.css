@@ -208,3 +208,40 @@ li {
 * {
     transition: all 0.3s ease-in-out;
 }
+
+/* ---------- Additional Embedded Styles ---------- */
+h1 {
+    border-bottom: 1px solid #DDDDDD;
+    color: #069;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 25px;
+    font-weight: normal;
+    line-height: 34px;
+    margin-bottom: 10px;
+    outline: none;
+    padding-bottom: 3px;
+    padding-top: 0;
+    text-decoration: none;
+}
+
+hr {
+    background-color: #069;
+    border: none;
+    clear: both;
+    color: #D4D4D4;
+    height: 1px;
+}
+
+.sublines {
+    background-color: #DAF4FE;
+    padding: 5px;
+    border: 1px solid #09C;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+}
+
+.infotext {
+    font-size: 10pt;
+    background-color: #F2F2F2;
+    padding: 5px;
+}

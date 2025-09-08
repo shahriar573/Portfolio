@@ -1,86 +1,175 @@
-document.addEventListener('DOMContentLoaded', function () {
-    // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
-    });
+// ==========================
+// FACTORY METHOD: UI Factory
+// ==========================
+class ListItemFactory {
+    static createItem(type, data, onDelete) {
+        const li = document.createElement('li');
 
-    // Skill cards animation
-    const skillCards = document.querySelectorAll('.skill-card');
-    skillCards.forEach(card => {
-        card.addEventListener('mouseenter', function () {
-            this.style.transform = 'translateY(-10px)';
-        });
-        card.addEventListener('mouseleave', function () {
-            this.style.transform = 'translateY(0)';
-        });
-    });
-
-    // Project cards hover effect
-    const projectCards = document.querySelectorAll('.project-card');
-    projectCards.forEach(card => {
-        card.addEventListener('mouseenter', function () {
-            this.style.boxShadow = '0 8px 16px rgba(0,0,0,0.2)';
-        });
-        card.addEventListener('mouseleave', function () {
-            this.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
-        });
-    });
-
-    // Back to top button functionality
-    const backToTop = document.createElement('button');
-    backToTop.innerHTML = '?';
-    backToTop.className = 'back-to-top';
-    backToTop.style.display = 'none';
-    document.body.appendChild(backToTop);
-
-    window.addEventListener('scroll', () => {
-        if (window.pageYOffset > 300) {
-            backToTop.style.display = 'block';
-        } else {
-            backToTop.style.display = 'none';
+        if (type === "skill") {
+            li.textContent = data.name + " ";
+        } else if (type === "project") {
+            li.textContent = `${data.title} - ${data.description} `;
         }
-    });
 
-    backToTop.addEventListener('click', () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
+        // Common delete button
+        const btn = document.createElement('button');
+        btn.textContent = "delete";
+        btn.style.marginLeft = "10px";
+        btn.onclick = () => onDelete(data.id);
 
-    // ?? External connectivity: fetch user data from Files.com API
-    async function loadExternalUsers() {
-        try {
-            const response = await fetch('/api/filescom/users');
-            const users = await response.json();
+        li.appendChild(btn);
+        return li;
+    }
+}
 
-            const usersSection = document.createElement('section');
-            usersSection.id = 'external-users';
-            usersSection.innerHTML = '<h2>Connected Users (Files.com)</h2>';
+// =======================================
+// ABSTRACT FACTORY: API handler generator
+// =======================================
+class SkillAPI {
+    baseUrl = '/api/skills';
 
-            const ul = document.createElement('ul');
-            users.forEach(user => {
-                const li = document.createElement('li');
-                li.textContent = `${user.username} (${user.email})`;
-                ul.appendChild(li);
-            });
+    getAll() {
+        return fetch(this.baseUrl).then(res => res.json());
+    }
+    add(skillName) {
+        return fetch(this.baseUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: skillName })
+        }).then(res => res.json());
+    }
+    delete(id) {
+        return fetch(`${this.baseUrl}/${id}`, { method: 'DELETE' });
+    }
+}
 
-            usersSection.appendChild(ul);
-            document.querySelector('main')?.appendChild(usersSection);
-        } catch (err) {
-            console.error("Error loading external users:", err);
+class ProjectAPI {
+    baseUrl = '/api/projects';
+
+    getAll() {
+        return fetch(this.baseUrl).then(res => res.json());
+    }
+    add(title, description) {
+        return fetch(this.baseUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title, description })
+        }).then(res => res.json());
+    }
+    delete(id) {
+        return fetch(`${this.baseUrl}/${id}`, { method: 'DELETE' });
+    }
+}
+
+const apiFactory = {
+    createAPI: function (type) {
+        switch (type) {
+            case "skill": return new SkillAPI();
+            case "project": return new ProjectAPI();
+            default: return null;
         }
     }
+};
 
-    // Load external connectivity data on page load
-    loadExternalUsers();
+// ==================
+// Admin.js Logic
+// ==================
+document.addEventListener("DOMContentLoaded", function () {
+    loadSkills();
+    loadProjects();
+    connectRealtimeUpdates(); //  Add real-time connection
 });
+
+// Load Skills
+function loadSkills() {
+    const skillAPI = apiFactory.createAPI("skill");
+    skillAPI.getAll().then(data => {
+        const skillsList = document.getElementById('skills-list');
+        skillsList.innerHTML = '';
+        data.forEach(skill => {
+            const li = ListItemFactory.createItem("skill", skill, deleteSkill);
+            skillsList.appendChild(li);
+        });
+    });
+}
+
+// Load Projects
+function loadProjects() {
+    const projectAPI = apiFactory.createAPI("project");
+    projectAPI.getAll().then(data => {
+        const projectsList = document.getElementById('projects-list');
+        projectsList.innerHTML = '';
+        data.forEach(project => {
+            const li = ListItemFactory.createItem("project", project, deleteProject);
+            projectsList.appendChild(li);
+        });
+    });
+}
+
+// Add Skill
+function addSkill() {
+    const skillName = document.getElementById('skill-name').value;
+    if (skillName) {
+        const skillAPI = apiFactory.createAPI("skill");
+        skillAPI.add(skillName).then(() => {
+            loadSkills();
+            document.getElementById('skill-name').value = '';
+        });
+    }
+}
+
+// Add Project
+function addProject() {
+    const projectTitle = document.getElementById('project-title').value;
+    const projectDescription = document.getElementById('project-description').value;
+    if (projectTitle && projectDescription) {
+        const projectAPI = apiFactory.createAPI("project");
+        projectAPI.add(projectTitle, projectDescription).then(() => {
+            loadProjects();
+            document.getElementById('project-title').value = '';
+            document.getElementById('project-description').value = '';
+        });
+    }
+}
+
+// Delete Skill
+function deleteSkill(id) {
+    const skillAPI = apiFactory.createAPI("skill");
+    skillAPI.delete(id).then(res => {
+        if (res.ok) loadSkills();
+    });
+}
+
+// Delete Project
+function deleteProject(id) {
+    const projectAPI = apiFactory.createAPI("project");
+    projectAPI.delete(id).then(res => {
+        if (res.ok) loadProjects();
+    });
+}
+
+// =======================================
+//  REAL-TIME: Server-Sent Events (SSE)
+// =======================================
+function connectRealtimeUpdates() {
+    const source = new EventSource('http://127.0.0.1:3000/events');
+
+    source.onmessage = function (event) {
+        try {
+            const update = JSON.parse(event.data);
+
+            if (update.type === "skill") {
+                loadSkills(); // reload skills
+            } else if (update.type === "project") {
+                loadProjects(); // reload projects
+            }
+
+        } catch (e) {
+            console.warn("Non-JSON event:", event.data);
+        }
+    };
+
+    source.onerror = function () {
+        console.error("Realtime connection lost.");
+    };
+}

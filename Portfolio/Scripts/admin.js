@@ -1,106 +1,148 @@
-// Load existing skills and projects when the page loads
+// ==========================
+// FACTORY METHOD: UI Factory
+// ==========================
+class ListItemFactory {
+    static createItem(type, data, onDelete) {
+        const li = document.createElement('li');
+
+        if (type === "skill") {
+            li.textContent = data.name + " ";
+        } else if (type === "project") {
+            li.textContent = `${data.title} - ${data.description} `;
+        }
+
+        // Common delete button
+        const btn = document.createElement('button');
+        btn.textContent = "delete";
+        btn.style.marginLeft = "10px";
+        btn.onclick = () => onDelete(data.id);
+
+        li.appendChild(btn);
+        return li;
+    }
+}
+
+// =======================================
+// ABSTRACT FACTORY: API handler generator
+// =======================================
+class SkillAPI {
+    baseUrl = '/api/skills';
+
+    getAll() {
+        return fetch(this.baseUrl).then(res => res.json());
+    }
+    add(skillName) {
+        return fetch(this.baseUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: skillName })
+        }).then(res => res.json());
+    }
+    delete(id) {
+        return fetch(`${this.baseUrl}/${id}`, { method: 'DELETE' });
+    }
+}
+
+class ProjectAPI {
+    baseUrl = '/api/projects';
+
+    getAll() {
+        return fetch(this.baseUrl).then(res => res.json());
+    }
+    add(title, description) {
+        return fetch(this.baseUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title, description })
+        }).then(res => res.json());
+    }
+    delete(id) {
+        return fetch(`${this.baseUrl}/${id}`, { method: 'DELETE' });
+    }
+}
+
+const apiFactory = {
+    createAPI: function (type) {
+        switch (type) {
+            case "skill": return new SkillAPI();
+            case "project": return new ProjectAPI();
+            default: return null;
+        }
+    }
+};
+
+// ==================
+// Admin.js Logic
+// ==================
 document.addEventListener("DOMContentLoaded", function () {
     loadSkills();
     loadProjects();
 });
 
+// Load Skills
 function loadSkills() {
-    fetch('/api/skills')
-        .then(response => response.json())
-        .then(data => {
-            const skillsList = document.getElementById('skills-list');
-            skillsList.innerHTML = ''; // clear before reloading
-            data.forEach(skill => {
-                const li = document.createElement('li');
-                li.textContent = skill.name + " ";
-
-                // Add delete button
-                const btn = document.createElement('button');
-                btn.textContent = "?";
-                btn.style.marginLeft = "10px";
-                btn.onclick = () => deleteSkill(skill.id);
-
-                li.appendChild(btn);
-                skillsList.appendChild(li);
-            });
+    const skillAPI = apiFactory.createAPI("skill");
+    skillAPI.getAll().then(data => {
+        const skillsList = document.getElementById('skills-list');
+        skillsList.innerHTML = '';
+        data.forEach(skill => {
+            const li = ListItemFactory.createItem("skill", skill, deleteSkill);
+            skillsList.appendChild(li);
         });
+    });
 }
 
+// Load Projects
 function loadProjects() {
-    fetch('/api/projects')
-        .then(response => response.json())
-        .then(data => {
-            const projectsList = document.getElementById('projects-list');
-            projectsList.innerHTML = ''; // clear before reloading
-            data.forEach(project => {
-                const li = document.createElement('li');
-                li.textContent = `${project.title} - ${project.description} `;
-
-                // Add delete button
-                const btn = document.createElement('button');
-                btn.textContent = "?";
-                btn.style.marginLeft = "10px";
-                btn.onclick = () => deleteProject(project.id);
-
-                li.appendChild(btn);
-                projectsList.appendChild(li);
-            });
+    const projectAPI = apiFactory.createAPI("project");
+    projectAPI.getAll().then(data => {
+        const projectsList = document.getElementById('projects-list');
+        projectsList.innerHTML = '';
+        data.forEach(project => {
+            const li = ListItemFactory.createItem("project", project, deleteProject);
+            projectsList.appendChild(li);
         });
+    });
 }
 
+// Add Skill
 function addSkill() {
     const skillName = document.getElementById('skill-name').value;
     if (skillName) {
-        fetch('/api/skills', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: skillName })
-        })
-            .then(response => response.json())
-            .then(data => {
-                loadSkills(); // reload list
-                document.getElementById('skill-name').value = ''; // clear input
-            });
+        const skillAPI = apiFactory.createAPI("skill");
+        skillAPI.add(skillName).then(() => {
+            loadSkills();
+            document.getElementById('skill-name').value = '';
+        });
     }
 }
 
+// Add Project
 function addProject() {
     const projectTitle = document.getElementById('project-title').value;
     const projectDescription = document.getElementById('project-description').value;
     if (projectTitle && projectDescription) {
-        fetch('/api/projects', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ title: projectTitle, description: projectDescription })
-        })
-            .then(response => response.json())
-            .then(data => {
-                loadProjects(); // reload list
-                document.getElementById('project-title').value = '';
-                document.getElementById('project-description').value = '';
-            });
+        const projectAPI = apiFactory.createAPI("project");
+        projectAPI.add(projectTitle, projectDescription).then(() => {
+            loadProjects();
+            document.getElementById('project-title').value = '';
+            document.getElementById('project-description').value = '';
+        });
     }
 }
 
-// Delete functions
+// Delete Skill
 function deleteSkill(id) {
-    fetch(`/api/skills/${id}`, {
-        method: 'DELETE'
-    })
-        .then(response => {
-            if (response.ok) {
-                loadSkills(); // reload list
-            }
-        });
+    const skillAPI = apiFactory.createAPI("skill");
+    skillAPI.delete(id).then(res => {
+        if (res.ok) loadSkills();
+    });
 }
 
+// Delete Project
 function deleteProject(id) {
-    fetch(`/api/projects/${id}`, {
-        method: 'DELETE'
-    })
-        .then(response => {
-            if (response.ok) {
-                loadProjects(); // reload list
-            }
-        });
+    const projectAPI = apiFactory.createAPI("project");
+    projectAPI.delete(id).then(res => {
+        if (res.ok) loadProjects();
+    });
 }
