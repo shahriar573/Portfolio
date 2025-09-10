@@ -4,12 +4,11 @@
 <html lang="en">
 <head runat="server">
     <title>Portfolio Site</title>
-    <link rel="stylesheet" href="~/CSS/Animations.css" />
- <link rel="stylesheet" href="~/CSS/Dashboard.css" />
- <link rel="stylesheet" href="~/CSS/Forms.css" />
-    <link rel="stylesheet" href="~/CSS/main.css" />
-    <link rel="stylesheet" href="~/CSS/Site.css" />
+    <link rel="stylesheet" href="~/CSS/AdminPanel.css" />
+ <link rel="stylesheet" href="~/CSS/ExtendedInfo.css" />
+ <link rel="stylesheet" href="~/CSS/Home.css" />
     <link rel="stylesheet" href="~/CSS/Portfolio.css" />
+  
 </head>
 <body>
     <form id="form1" runat="server">
@@ -29,10 +28,6 @@
         <!-- Navigation Panels -->
         <nav>
             <!-- Admin Navigation -->
-            <asp:Panel ID="navAdmin" runat="server" Visible="false">
-                <a href="Home.aspx">Home</a> | 
-                <a href="ExtendedInfo.aspx">Manage Projects</a> | 
-            </asp:Panel>
 
             <!-- Member Navigation -->
             <asp:Panel ID="navMember" runat="server" Visible="false">
@@ -52,6 +47,7 @@
 
         <!-- Message Label -->
         <asp:Label ID="lblMessage" runat="server" Text="" CssClass="message"></asp:Label>
+
     </form>
     <script src="~/Scripts/admin.js"></script>
     <script src="~/Scripts/portfolio.js"></script>

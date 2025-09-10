@@ -141,14 +141,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AdminPanel.aspx" />
-    <Content Include="CSS\Animations.css" />
-    <Content Include="CSS\Dashboard.css" />
-    <Content Include="CSS\Forms.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="CSS\main.css" />
+    <Content Include="CSS\AdminPanel.css" />
+    <Content Include="CSS\ExtendedInfo.css" />
+    <Content Include="CSS\Home.css" />
     <Content Include="CSS\Portfolio.css" />
-    <Content Include="CSS\Site.css" />
     <Content Include="ExtendedInfo.aspx" />
     <Content Include="Home.aspx" />
     <Content Include="ILLink\ILLink.Descriptors.LibraryBuild.xml" />
@@ -159,6 +155,13 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdminPanel.aspx.cs">
+      <DependentUpon>AdminPanel.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminPanel.aspx.designer.cs">
+      <DependentUpon>AdminPanel.aspx</DependentUpon>
+    </Compile>
     <Compile Include="CS\Project.cs" />
     <Compile Include="CS\User.cs" />
     <Compile Include="ExtendedInfo.aspx.cs">

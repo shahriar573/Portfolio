@@ -1,15 +1,14 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AdminPanel.aspx.cs" Inherits="Portfolio_Website.Pages.AdminPanel" %>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Admin Panel</title>
-    <link rel="stylesheet" href="../Assets/Styles/admin.css">
-</head>
-<body>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AdminPanel.aspx.cs" Inherits="Portfolio_Website.Pages.AdminPanel" MasterPageFile="~/Site.Master" %>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <header>
         <h1>Admin Panel</h1>
+        <div class="admin-nav-buttons">
+            <a href="Home.aspx" class="home-btn">Home</a>
+            <a href="AdminPanel.aspx" class="adminhome-btn">AdminHome</a>
+        </div>
     </header>
+
     <main>
         <section id="manage-skills">
             <h2>Manage Skills</h2>
@@ -21,6 +20,7 @@
                 <!-- Skills will be dynamically loaded here -->
             </ul>
         </section>
+
         <section id="manage-projects">
             <h2>Manage Projects</h2>
             <form id="projects-form">
@@ -33,6 +33,6 @@
             </ul>
         </section>
     </main>
+
     <script src="../Assets/Scripts/admin.js"></script>
-</body>
-</html>
+</asp:Content>

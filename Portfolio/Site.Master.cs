@@ -38,7 +38,6 @@ namespace Portfolio_Website
                 btnLogin.Visible = false;
                 btnLogout.Visible = true;
 
-                navAdmin.Visible = role == "Admin";
                 navMember.Visible = role == "Admin" || role == "Member";
                 navGuest.Visible = false;
             }
@@ -48,7 +47,6 @@ namespace Portfolio_Website
                 btnLogin.Visible = true;
                 btnLogout.Visible = false;
 
-                navAdmin.Visible = false;
                 navMember.Visible = false;
                 navGuest.Visible = true;
             }

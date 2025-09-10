@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace Portfolio_Website
 {
@@ -13,7 +14,7 @@ namespace Portfolio_Website
             var role = Session["UserRole"]?.ToString();
             if (role != "Admin")
             {
-                Response.Redirect("Home.aspx"); // Only Admin can manage projects
+                Response.Redirect("Home.aspx");
                 return;
             }
 
@@ -21,19 +22,26 @@ namespace Portfolio_Website
                 BindProjects();
         }
 
-        private void BindProjects()
+        private DataTable GetProjectsData()
         {
             string connStr = ConfigurationManager.ConnectionStrings["MyDBConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connStr))
             {
-                using (SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM Projects", conn))
+                using (SqlDataAdapter da = new SqlDataAdapter("SELECT ProjectID, ProjectName, ProjectDescription FROM Projects", conn))
                 {
                     DataTable dt = new DataTable();
                     da.Fill(dt);
-                    gvProjects.DataSource = dt;
-                    gvProjects.DataBind();
+                    dt.Columns.Add("IsEditing", typeof(bool));
+                    foreach (DataRow row in dt.Rows) row["IsEditing"] = false;
+                    return dt;
                 }
             }
+        }
+
+        private void BindProjects()
+        {
+            rptProjects.DataSource = GetProjectsData();
+            rptProjects.DataBind();
         }
 
         protected void btnAddProject_Click(object sender, EventArgs e)
@@ -59,46 +67,9 @@ namespace Portfolio_Website
             BindProjects();
         }
 
-        protected void gvProjects_RowEditing(object sender, System.Web.UI.WebControls.GridViewEditEventArgs e)
+        protected void btnDelete_Click(object sender, EventArgs e)
         {
-            gvProjects.EditIndex = e.NewEditIndex;
-            BindProjects();
-        }
-
-        protected void gvProjects_RowCancelingEdit(object sender, System.Web.UI.WebControls.GridViewCancelEditEventArgs e)
-        {
-            gvProjects.EditIndex = -1;
-            BindProjects();
-        }
-
-        protected void gvProjects_RowUpdating(object sender, System.Web.UI.WebControls.GridViewUpdateEventArgs e)
-        {
-            int id = Convert.ToInt32(gvProjects.DataKeys[e.RowIndex].Value);
-            string name = ((System.Web.UI.WebControls.TextBox)gvProjects.Rows[e.RowIndex].Cells[1].Controls[0]).Text;
-            string desc = ((System.Web.UI.WebControls.TextBox)gvProjects.Rows[e.RowIndex].Cells[2].Controls[0]).Text;
-
-            string connStr = ConfigurationManager.ConnectionStrings["MyDBConnection"].ConnectionString;
-            using (SqlConnection conn = new SqlConnection(connStr))
-            {
-                string sql = "UPDATE Projects SET ProjectName=@Name, [ProjectDescription]=@Desc WHERE ProjectID=@ID";
-                using (SqlCommand cmd = new SqlCommand(sql, conn))
-                {
-                    cmd.Parameters.AddWithValue("@ID", id);
-                    cmd.Parameters.AddWithValue("@Name", name);
-                    cmd.Parameters.AddWithValue("@Desc", desc);
-                    conn.Open();
-                    cmd.ExecuteNonQuery();
-                }
-            }
-
-            gvProjects.EditIndex = -1;
-            BindProjects();
-        }
-
-        protected void gvProjects_RowDeleting(object sender, System.Web.UI.WebControls.GridViewDeleteEventArgs e)
-        {
-            int id = Convert.ToInt32(gvProjects.DataKeys[e.RowIndex].Value);
-
+            int id = Convert.ToInt32(((System.Web.UI.WebControls.Button)sender).CommandArgument);
             string connStr = ConfigurationManager.ConnectionStrings["MyDBConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connStr))
             {
@@ -113,6 +84,44 @@ namespace Portfolio_Website
 
             BindProjects();
         }
+
+        protected void btnEdit_Click(object sender, EventArgs e)
+        {
+            int id = Convert.ToInt32(((System.Web.UI.WebControls.Button)sender).CommandArgument);
+            DataTable dt = GetProjectsData();
+            foreach (DataRow row in dt.Rows) row["IsEditing"] = (int)row["ProjectID"] == id;
+            rptProjects.DataSource = dt;
+            rptProjects.DataBind();
+        }
+
+        protected void btnUpdate_Click(object sender, EventArgs e)
+        {
+            var btn = (System.Web.UI.WebControls.Button)sender;
+            int id = Convert.ToInt32(btn.CommandArgument);
+            var item = (RepeaterItem)btn.NamingContainer;
+            string name = ((System.Web.UI.WebControls.TextBox)item.FindControl("txtEditName")).Text;
+            string desc = ((System.Web.UI.WebControls.TextBox)item.FindControl("txtEditDesc")).Text;
+
+            string connStr = ConfigurationManager.ConnectionStrings["MyDBConnection"].ConnectionString;
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                string sql = "UPDATE Projects SET ProjectName=@Name, ProjectDescription=@Desc WHERE ProjectID=@ID";
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@ID", id);
+                    cmd.Parameters.AddWithValue("@Name", name);
+                    cmd.Parameters.AddWithValue("@Desc", desc);
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            BindProjects();
+        }
+
+        protected void btnCancel_Click(object sender, EventArgs e)
+        {
+            BindProjects();
+        }
     }
 }
-
